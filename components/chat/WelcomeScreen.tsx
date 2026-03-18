@@ -5,10 +5,11 @@ interface WelcomeScreenProps {
   isSignedIn: boolean;
 }
 
+// Updated to match the fashion/clothing categories from your shopping-agent.ts
 const productSuggestions = [
-  "Show me oak tables",
-  "Leather sofas under ₹1000",
-  "What chairs do you have?",
+  "Show me denim jackets",
+  "Black hoodies under £50", // Changed to £ since your agent prompt uses GBP
+  "What t-shirts do you have?",
 ];
 
 const orderSuggestions = [
@@ -31,8 +32,8 @@ export function WelcomeScreen({
       </h3>
       <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400 max-w-xs">
         {isSignedIn
-          ? "I can help you find furniture, check your orders, and track deliveries."
-          : "I can help you find furniture by style, material, color, or price. Just ask!"}
+          ? "I can help you find clothing, check your orders, and track deliveries."
+          : "I can help you find clothing by style, material, color, or price. Just ask!"}
       </p>
 
       {/* Product suggestions */}

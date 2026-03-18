@@ -11,7 +11,7 @@ import { formatPrice, formatDate, formatOrderNumber } from "@/lib/utils";
 import { StackedProductImages } from "@/components/app/StackedProductImages";
 
 export const metadata = {
-  title: "Your Orders | Furniture Shop",
+  title: "Your Orders | Calcux",
   description: "View your order history",
 };
 

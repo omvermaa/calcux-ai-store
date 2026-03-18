@@ -326,7 +326,7 @@ export const AI_SEARCH_PRODUCTS_QUERY = defineQuery(`*[
     || description match $searchQuery + "*"
     || category->title match $searchQuery + "*"
   )
-  && ($categorySlug == "" || category->slug.current == $categorySlug)
+  && ($categorySlug == "" || category->slug.current in [$categorySlug, $categorySlug + "s", $categorySlug + "es"])
   && ($material == "" || material == $material)
   && ($color == "" || color == $color)
   && ($minPrice == 0 || price >= $minPrice)

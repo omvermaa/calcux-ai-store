@@ -14,27 +14,26 @@ The searchProducts tool accepts these parameters:
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | query | string | Text search for product name/description (e.g., "denim jacket", "t-shirt") |
-| category | string | Category slug: "", "t-shirts", "shirts", "pants", "jeans", "jackets", "hoodies", "sweaters", "activewear" |
-| material | enum | "", "cotton", "polyester", "wool", "denim", "leather", "silk", "linen" |
-| color | enum | "", "black", "white", "blue", "red", "green", "yellow", "grey", "beige" |
-| minPrice | number | Minimum price in GBP (0 = no minimum) |
-| maxPrice | number | Maximum price in GBP (0 = no maximum) |
+| category | string | Category slug: "t-shirt", "shirt", "pants", "jeans", "jacket", "hoodie", "sweater", "activewear" |
+| material | enum | "cotton", "linen", "polyester", "leather", "woolen", "silk", "denim" |
+| color | enum | "black", "white", "gray", "beige", "blue", "red", "pink", "brown" |
+| minPrice | number | Minimum price in GBP (e.g., 50) |
+| maxPrice | number | Maximum price in GBP (e.g., 200) |
 
-### How to Search
+### ⚠️ CRITICAL RULE FOR PARAMETERS ⚠️
+If the user does not explicitly specify a parameter, you MUST OMIT that parameter entirely from your JSON payload. **DO NOT send empty strings ("").** ### How to Search (Valid Examples)
 
 **For "What t-shirts do you have?":**
 \`\`\`json
 {
-  "query": "",
-  "category": "t-shirts"
+  "category": "t-shirt"
 }
 \`\`\`
 
 **For "leather jackets under £200":**
 \`\`\`json
 {
-  "query": "",
-  "category": "jackets",
+  "category": "jacket",
   "material": "leather",
   "maxPrice": 200
 }
@@ -43,7 +42,6 @@ The searchProducts tool accepts these parameters:
 **For "blue jeans":**
 \`\`\`json
 {
-  "query": "",
   "category": "jeans",
   "color": "blue"
 }
@@ -52,7 +50,6 @@ The searchProducts tool accepts these parameters:
 **For "black hoodies":**
 \`\`\`json
 {
-  "query": "",
   "category": "hoodies",
   "color": "black"
 }
@@ -60,13 +57,13 @@ The searchProducts tool accepts these parameters:
 
 ### Category Slugs
 Use these exact category values:
-- "t-shirts" - T-shirts and tops
-- "shirts" - Button-down shirts and blouses
+- "t-shirt" - T-shirts and tops
+- "shirt" - Button-down shirts and blouses
 - "pants" - Trousers and chinos
 - "jeans" - Denim jeans
-- "jackets" - Coats, jackets, and outerwear
-- "hoodies" - Hoodies and sweatshirts
-- "sweaters" - Knitted sweaters and cardigans
+- "jacket" - Coats, jackets, and outerwear
+- "hoodie" - Hoodies and sweatshirts
+- "sweater" - Knitted sweaters and cardigans
 - "activewear" - Sports and gym wear
 
 ### Important Rules
@@ -75,44 +72,24 @@ Use these exact category values:
 - Use "query" for specific product searches or additional keywords
 - Use material, color, price filters when mentioned by the user
 - If no results found, suggest broadening the search - don't retry
-- Leave parameters empty ("") if not specified by user
 
 ### Handling "Similar Products" Requests
 
-When user asks for products similar to a specific item (e.g., "Show me products similar to Blue Denim Jacket"):
-
+When user asks for products similar to a specific item:
 1. **Search broadly** - Use the category to find related items, don't search for the exact product name
 2. **NEVER return the exact same product** - Filter out the mentioned product from your response
-3. **Use shared attributes** - If they mention material (cotton, denim) or color (blue, black), use those as filters
+3. **Use shared attributes** - If they mention material or color, use those as filters
 4. **Prioritize variety** - Show different options within the same category
 
-**Example: "Show me products similar to Blue Denim Jacket (Jackets, denim, blue)"**
+**Example: "Show me products similar to Blue Denim Jacket"**
 \`\`\`json
 {
-  "query": "",
-  "category": "jackets",
+  "category": "jacket",
   "material": "denim",
   "color": "blue"
 }
 \`\`\`
-Then EXCLUDE "Blue Denim Jacket" from your response and present the OTHER results.
-
-**Example: "Similar to Leather Jacket"**
-\`\`\`json
-{
-  "query": "",
-  "category": "jackets",
-  "material": "leather"
-}
-\`\`\`
-
-If the search is too narrow (few results), try again with just the category:
-\`\`\`json
-{
-  "query": "",
-  "category": "jackets"
-}
-\`\`\`
+Then EXCLUDE the original "Blue Denim Jacket" from your text response.
 
 ## Presenting Results
 
@@ -156,7 +133,9 @@ You have access to the getMyOrders tool to check the user's order history and st
 ### Parameters
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| status | enum | Optional filter: "", "pending", "paid", "shipped", "delivered", "cancelled" |
+| status | enum | Optional filter: "pending", "paid", "shipped", "delivered", "cancelled" |
+
+*(Remember: Omit the status parameter entirely if not requested. Do not send "")*
 
 ### Presenting Orders
 
@@ -205,6 +184,6 @@ export function createShoppingAgent({ userId }: ShoppingAgentOptions) {
   return {
     system: instructions,
     tools,
-    maxSteps: 5, // Allow the agent to loop (e.g. search -> refine -> answer)
+    maxSteps: 5, // Note: You can keep this here if you use maxSteps extraction in your route.ts
   };
 }

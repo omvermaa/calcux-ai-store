@@ -8,7 +8,7 @@ import { LOW_STOCK_THRESHOLD } from "@/lib/constants/stock";
 /** Common filter conditions for product filtering */
 const PRODUCT_FILTER_CONDITIONS = `
   _type == "product"
-  && ($categorySlug == "" || category->slug.current == $categorySlug)
+   && ($categorySlug == "" || category->slug.current in [$categorySlug, $categorySlug + "s", $categorySlug + "es"])
   && ($color == "" || color == $color)
   && ($material == "" || material == $material)
   && ($minPrice == 0 || price >= $minPrice)
@@ -326,7 +326,7 @@ export const AI_SEARCH_PRODUCTS_QUERY = defineQuery(`*[
     || description match $searchQuery + "*"
     || category->title match $searchQuery + "*"
   )
-  && ($categorySlug == "" || category->slug.current == $categorySlug)
+  && ($categorySlug == "" || category->slug.current in [$categorySlug, $categorySlug + "s", $categorySlug + "es"])
   && ($material == "" || material == $material)
   && ($color == "" || color == $color)
   && ($minPrice == 0 || price >= $minPrice)
