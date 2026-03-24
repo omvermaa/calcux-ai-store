@@ -8,7 +8,7 @@ interface WelcomeScreenProps {
 // Updated to match the fashion/clothing categories from your shopping-agent.ts
 const productSuggestions = [
   "Show me denim jackets",
-  "Black hoodies under £50", // Changed to £ since your agent prompt uses GBP
+  "Black hoodies under ₹4000", // Changed to £ since your agent prompt uses GBP
   "What t-shirts do you have?",
 ];
 

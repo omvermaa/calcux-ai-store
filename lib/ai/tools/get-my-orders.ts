@@ -11,10 +11,9 @@ import type { ORDERS_BY_USER_QUERYResult } from "@/sanity.types";
 
 const getMyOrdersSchema = z.object({
   status: z
-    .enum(["", ...ORDER_STATUS_VALUES])
+    .enum(ORDER_STATUS_VALUES as [string, ...string[]])
     .optional()
-    .default("")
-    .describe("Filter orders by status (leave empty for all orders)"),
+    .describe("Filter orders by status (omit for all orders)"),
 });
 
 export interface OrderSummary {
