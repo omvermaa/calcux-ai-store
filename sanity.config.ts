@@ -2,10 +2,6 @@
 
 import './sanity.polyfill'
 
-/**
- * This configuration is used to for the Sanity Studio that’s mounted on the `\app\studio\[[...tool]]\page.tsx` route
- */
-
 import {visionTool} from '@sanity/vision'
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
@@ -17,8 +13,9 @@ import {structure} from './sanity/structure'
 
 export default defineConfig({
   basePath: '/studio',
-  projectId,
-  dataset,
+  // 👇 Explicitly cast these as strings to satisfy TypeScript
+  projectId: projectId as string,
+  dataset: dataset as string,
   // Add and edit the content schema in the './sanity/schemaTypes' folder
   schema,
   plugins: [
