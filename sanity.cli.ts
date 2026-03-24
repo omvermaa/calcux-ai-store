@@ -1,9 +1,10 @@
-import "./sanity.polyfill";
-import { defineCliConfig } from "sanity/cli";
+
+import { defineCliConfig } from 'sanity/cli'
+import { dataset, projectId } from './sanity/env'
 
 export default defineCliConfig({
   api: {
-    projectId: "9dt7fnof",
-    dataset: "production",
-  },
-});
+    projectId: projectId as string,
+    dataset: dataset as string,
+  }
+})
